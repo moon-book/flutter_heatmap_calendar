@@ -51,7 +51,7 @@ class HeatMap extends StatefulWidget {
   /// Function that will be called when a block is clicked.
   ///
   /// Parameter gives clicked [DateTime] value.
-  final Function(DateTime)? onClick;
+  final Function(DateTime, [TapUpDetails?])? onClick;
 
   /// The margin value for every block.
   final EdgeInsets? margin;

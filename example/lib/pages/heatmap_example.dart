@@ -30,10 +30,8 @@ class _HeatMapExample extends State<HeatMapExample> {
       child: TextField(
         controller: controller,
         decoration: InputDecoration(
-          enabledBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: Color(0xffe7e7e7), width: 1.0)),
-          focusedBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: Color(0xFF20bca4), width: 1.0)),
+          enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Color(0xffe7e7e7), width: 1.0)),
+          focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Color(0xFF20bca4), width: 1.0)),
           hintText: hint,
           hintStyle: const TextStyle(color: Colors.grey),
           isDense: true,
@@ -58,8 +56,7 @@ class _HeatMapExample extends State<HeatMapExample> {
                 padding: const EdgeInsets.all(20),
                 child: HeatMap(
                   scrollable: true,
-                  colorMode:
-                      isOpacityMode ? ColorMode.opacity : ColorMode.color,
+                  colorMode: isOpacityMode ? ColorMode.opacity : ColorMode.color,
                   datasets: heatMapDatasets,
                   colorsets: const {
                     1: Colors.red,
@@ -70,9 +67,12 @@ class _HeatMapExample extends State<HeatMapExample> {
                     11: Colors.indigo,
                     13: Colors.purple,
                   },
-                  onClick: (value) {
+                  onClick: (value, [details]) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(value.toString())));
+                      SnackBar(
+                        content: Text('$value ${details?.globalPosition.toString()}'),
+                      ),
+                    );
                   },
                 ),
               ),
@@ -83,8 +83,7 @@ class _HeatMapExample extends State<HeatMapExample> {
               child: const Text('COMMIT'),
               onPressed: () {
                 setState(() {
-                  heatMapDatasets[DateTime.parse(dateController.text)] =
-                      int.parse(heatLevelController.text);
+                  heatMapDatasets[DateTime.parse(dateController.text)] = int.parse(heatLevelController.text);
                 });
               },
             ),

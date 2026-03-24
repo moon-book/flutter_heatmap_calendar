@@ -63,7 +63,7 @@ class HeatMapCalendarRow extends StatelessWidget {
   /// Function that will be called when a block is clicked.
   ///
   /// Paratmeter gives clicked [DateTime] value.
-  final Function(DateTime)? onClick;
+  final Function(DateTime, [TapUpDetails?])? onClick;
 
   HeatMapCalendarRow({
     Key? key,

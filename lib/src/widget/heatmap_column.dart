@@ -61,7 +61,7 @@ class HeatMapColumn extends StatelessWidget {
   /// Function that will be called when a block is clicked.
   ///
   /// Paratmeter gives clicked [DateTime] value.
-  final Function(DateTime)? onClick;
+  final Function(DateTime, [TapUpDetails?])? onClick;
 
   /// The integer value of the maximum value for the highest value of the month.
   final int? maxValue;
