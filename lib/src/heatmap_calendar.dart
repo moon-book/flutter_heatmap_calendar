@@ -62,7 +62,7 @@ class HeatMapCalendar extends StatefulWidget {
   /// Function that will be called when a block is clicked.
   ///
   /// Paratmeter gives clicked [DateTime] value.
-  final Function(DateTime)? onClick;
+  final Function(DateTime, [TapUpDetails?])? onClick;
 
   /// Function that will be called when month is changed.
   ///
