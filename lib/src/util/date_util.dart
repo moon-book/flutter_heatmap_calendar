@@ -44,6 +44,17 @@ class DateUtil {
     'Sat',
   ];
 
+  static const List<String> SHORT_WEEK_LABEL = [
+    '',
+    'CN',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+  ];
+
   /// Get start day of month.
   static DateTime startDayOfMonth(final DateTime referenceDate) =>
       DateTime(referenceDate.year, referenceDate.month, 1);
