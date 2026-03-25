@@ -74,6 +74,8 @@ class _HeatMapCalendarExample extends State<HeatMapCalendarExample> {
                   },
                   enableBackBtn: false,
                   enableNextBtn: true,
+                  monthYearDelimiter: '/',
+                  useShortYearNumber: true,
                 ),
               ),
             ),
