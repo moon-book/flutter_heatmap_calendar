@@ -88,6 +88,9 @@ class HeatMapCalendar extends StatefulWidget {
   final double? colorTipSize;
 
   final bool useShortWeekLabel;
+  final bool enableNextBtn;
+  final bool enableBackBtn;
+  final bool isVietnamese;
 
   const HeatMapCalendar({
     Key? key,
@@ -112,6 +115,9 @@ class HeatMapCalendar extends StatefulWidget {
     this.colorTipCount,
     this.colorTipSize,
     this.useShortWeekLabel = false,
+    this.enableNextBtn = true,
+    this.enableBackBtn = true,
+    this.isVietnamese = true,
   }) : super(key: key);
 
   @override
@@ -141,34 +147,41 @@ class _HeatMapCalendar extends State<HeatMapCalendar> {
 
   /// Header widget which shows left, right buttons and year/month text.
   Widget _header() {
+    final monthLabels = widget.isVietnamese ? DateUtil.SHORT_MONTH_LABEL_VN : DateUtil.MONTH_LABEL;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         // Previous month button.
-        IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            size: 14,
+        if (widget.enableBackBtn)
+          IconButton(
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              size: 14,
+            ),
+            onPressed: () => changeMonth(-1),
           ),
-          onPressed: () => changeMonth(-1),
-        ),
 
         // Text which shows the current year and month
-        Text(
-          DateUtil.MONTH_LABEL[_currentDate?.month ?? 0] + ' ' + (_currentDate?.year).toString(),
-          style: TextStyle(
-            fontSize: widget.monthFontSize ?? 12,
+        Expanded(
+          child: Center(
+            child: Text(
+              monthLabels[_currentDate?.month ?? 0] + ' ' + (_currentDate?.year).toString(),
+              style: TextStyle(
+                fontSize: widget.monthFontSize ?? 12,
+              ),
+            ),
           ),
         ),
 
         // Next month button.
-        IconButton(
-          icon: const Icon(
-            Icons.arrow_forward_ios,
-            size: 14,
+        if (widget.enableNextBtn)
+          IconButton(
+            icon: const Icon(
+              Icons.arrow_forward_ios,
+              size: 14,
+            ),
+            onPressed: () => changeMonth(1),
           ),
-          onPressed: () => changeMonth(1),
-        ),
       ],
     );
   }
