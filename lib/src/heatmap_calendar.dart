@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_heatmap_calendar/src/data/typedefs.dart';
 import 'package:intl/intl.dart';
 import './data/heatmap_color_mode.dart';
 import './widget/heatmap_calendar_page.dart';
@@ -94,6 +95,8 @@ class HeatMapCalendar extends StatefulWidget {
   final bool isVietnamese;
   final String monthYearDelimiter;
   final bool useShortYearNumber;
+  final OnEnterDateCallback? onEnter;
+  final OnHoverDateCallback? onHover;
 
   const HeatMapCalendar({
     Key? key,
@@ -123,6 +126,8 @@ class HeatMapCalendar extends StatefulWidget {
     this.isVietnamese = true,
     this.monthYearDelimiter = ' ',
     this.useShortYearNumber = false,
+    this.onEnter,
+    this.onHover,
   }) : super(key: key);
 
   @override
@@ -153,7 +158,11 @@ class _HeatMapCalendar extends State<HeatMapCalendar> {
   /// Header widget which shows left, right buttons and year/month text.
   Widget _header() {
     final monthLabels = widget.isVietnamese ? DateUtil.SHORT_MONTH_LABEL_VN : DateUtil.MONTH_LABEL;
-    String yearStr = _currentDate != null ? widget.useShortYearNumber ? DateFormat('yy').format(_currentDate!) : '${_currentDate?.year}' : '';
+    String yearStr = _currentDate != null
+        ? widget.useShortYearNumber
+            ? DateFormat('yy').format(_currentDate!)
+            : '${_currentDate?.year}'
+        : '';
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -245,6 +254,8 @@ class _HeatMapCalendar extends State<HeatMapCalendar> {
             colorsets: widget.colorsets,
             borderRadius: widget.borderRadius,
             onClick: widget.onClick,
+            onEnter: widget.onEnter,
+            onHover: widget.onHover,
           ),
           if (widget.showColorTip == true)
             HeatMapColorTip(
