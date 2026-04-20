@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_heatmap_calendar/src/data/typedefs.dart';
 import './heatmap_calendar_row.dart';
 import '../util/date_util.dart';
 import '../util/datasets_util.dart';
@@ -60,10 +59,7 @@ class HeatMapCalendarPage extends StatelessWidget {
   /// Function that will be called when a block is clicked.
   ///
   /// Paratmeter gives clicked [DateTime] value.
-  final void Function(DateTime, [TapUpDetails?])? onClick;
-
-  final OnEnterDateCallback? onEnter;
-  final OnHoverDateCallback? onHover;
+  final Function(DateTime, [TapUpDetails?])? onClick;
 
   HeatMapCalendarPage({
     Key? key,
@@ -79,10 +75,9 @@ class HeatMapCalendarPage extends StatelessWidget {
     this.colorsets,
     this.borderRadius,
     this.onClick,
-    this.onHover,
-    this.onEnter,
   })  : separatedDate = DateUtil.separatedMonth(baseDate),
-        maxValue = DatasetsUtil.getMaxValue(DatasetsUtil.filterMonth(datasets, baseDate)),
+        maxValue = DatasetsUtil.getMaxValue(
+            DatasetsUtil.filterMonth(datasets, baseDate)),
         super(key: key);
 
   @override
@@ -105,12 +100,12 @@ class HeatMapCalendarPage extends StatelessWidget {
             margin: margin,
             maxValue: maxValue,
             onClick: onClick,
-            onEnter: onEnter,
-            onHover: onHover,
             datasets: Map.from(datasets ?? {})
               ..removeWhere(
-                (key, value) =>
-                    !(key.isAfter(date.keys.first) && key.isBefore(date.values.first) || key == date.keys.first || key == date.values.first),
+                (key, value) => !(key.isAfter(date.keys.first) &&
+                        key.isBefore(date.values.first) ||
+                    key == date.keys.first ||
+                    key == date.values.first),
               ),
           ),
       ],
