@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_heatmap_calendar/src/data/typedefs.dart';
 import './data/heatmap_color_mode.dart';
 import './widget/heatmap_calendar_page.dart';
 import './widget/heatmap_color_tip.dart';
@@ -63,7 +63,7 @@ class HeatMapCalendar extends StatefulWidget {
   /// Function that will be called when a block is clicked.
   ///
   /// Paratmeter gives clicked [DateTime] value.
-  final Function(DateTime, [TapUpDetails?])? onClick;
+  final void Function(DateTime, [TapUpDetails?])? onClick;
 
   /// Function that will be called when month is changed.
   ///
@@ -88,12 +88,8 @@ class HeatMapCalendar extends StatefulWidget {
   /// The double value of [HeatMapColorTip]'s tip container's size.
   final double? colorTipSize;
 
-  final bool useShortWeekLabel;
-  final bool enableNextBtn;
-  final bool enableBackBtn;
-  final bool isVietnamese;
-  final String monthYearDelimiter;
-  final bool useShortYearNumber;
+  final OnEnterDateCallback? onEnter;
+  final OnHoverDateCallback? onHover;
 
   const HeatMapCalendar({
     Key? key,
@@ -117,12 +113,8 @@ class HeatMapCalendar extends StatefulWidget {
     this.colorTipHelper,
     this.colorTipCount,
     this.colorTipSize,
-    this.useShortWeekLabel = false,
-    this.enableNextBtn = true,
-    this.enableBackBtn = true,
-    this.isVietnamese = true,
-    this.monthYearDelimiter = ' ',
-    this.useShortYearNumber = false,
+    this.onHover,
+    this.onEnter,
   }) : super(key: key);
 
   @override
@@ -152,52 +144,43 @@ class _HeatMapCalendar extends State<HeatMapCalendar> {
 
   /// Header widget which shows left, right buttons and year/month text.
   Widget _header() {
-    final monthLabels = widget.isVietnamese ? DateUtil.SHORT_MONTH_LABEL_VN : DateUtil.MONTH_LABEL;
-    String yearStr = _currentDate != null ? widget.useShortYearNumber ? DateFormat('yy').format(_currentDate!) : '${_currentDate?.year}' : '';
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         // Previous month button.
-        if (widget.enableBackBtn)
-          IconButton(
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              size: 14,
-            ),
-            onPressed: () => changeMonth(-1),
+        IconButton(
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            size: 14,
           ),
+          onPressed: () => changeMonth(-1),
+        ),
 
         // Text which shows the current year and month
-        Expanded(
-          child: Center(
-            child: Text(
-              monthLabels[_currentDate?.month ?? 0] + widget.monthYearDelimiter + yearStr,
-              style: TextStyle(
-                fontSize: widget.monthFontSize ?? 12,
-              ),
-            ),
+        Text(
+          DateUtil.MONTH_LABEL[_currentDate?.month ?? 0] + ' ' + (_currentDate?.year).toString(),
+          style: TextStyle(
+            fontSize: widget.monthFontSize ?? 12,
           ),
         ),
 
         // Next month button.
-        if (widget.enableNextBtn)
-          IconButton(
-            icon: const Icon(
-              Icons.arrow_forward_ios,
-              size: 14,
-            ),
-            onPressed: () => changeMonth(1),
+        IconButton(
+          icon: const Icon(
+            Icons.arrow_forward_ios,
+            size: 14,
           ),
+          onPressed: () => changeMonth(1),
+        ),
       ],
     );
   }
 
   Widget _weekLabel() {
-    final weekLabels = (widget.useShortWeekLabel ? DateUtil.SHORT_WEEK_LABEL : DateUtil.WEEK_LABEL).skip(1);
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        for (String label in weekLabels)
+        for (String label in DateUtil.WEEK_LABEL.skip(1))
           WidgetUtil.flexibleContainer(
             widget.flexible ?? false,
             false,
@@ -245,6 +228,8 @@ class _HeatMapCalendar extends State<HeatMapCalendar> {
             colorsets: widget.colorsets,
             borderRadius: widget.borderRadius,
             onClick: widget.onClick,
+            onEnter: widget.onEnter,
+            onHover: widget.onHover,
           ),
           if (widget.showColorTip == true)
             HeatMapColorTip(
